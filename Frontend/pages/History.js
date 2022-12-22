@@ -1,13 +1,16 @@
+const moment = require("moment")
 import Footer from './components/Footer';
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/History.module.css';
+import Header from './components/Header';
 
 export default function History() {
 
     const [myTaskCompleted, setMyTaskCompleted] = useState([])
     const [currentTimer, setCurrentTimer] = useState("")
-    const [selectDate, setSelectDate] = useState("")
+
+    let todayDate = moment().format("DD-MM-YYYY");
 
     const UpdateTime = () => {
         let time = new Date().toLocaleTimeString();
@@ -18,7 +21,7 @@ export default function History() {
     function callDateWiseTasks(date) {
         let selectedDate = date
         if (selectedDate === undefined) {
-            selectedDate = ("2022-12-21")
+            selectedDate = moment().format("YYYY-MM-DD");
             fetch(`http://localhost:3000/task-detail/${selectedDate}`).then((result) => {
                 result.json().then((resp) => {
                     if (resp.length === 0) {
@@ -63,12 +66,13 @@ export default function History() {
 
     return (
         <div className={`container-md ${styles.making_mobile_size_scrn} ${styles.side_scrollbox_start}`}>
-            <h1 className="text-center pt-2 pb-3"><u>Daily 6</u></h1>
+            {/* <h1 className="text-center pt-2 pb-3"><u>Daily 6</u></h1>
             <div className="row">
-                <div className="col-6"><h6>Date: 21-12-2022</h6></div>
+                <div className="col-6"><h6>Date: {todayDate}</h6></div>
                 <div className="col-6" style={{ textAlign: "right" }}><h6>Time: {currentTimer}</h6></div>
-            </div>
+            </div> */}
             {/* <h4 className="text-center pt-3">My Daily Tasks</h4> */}
+            <Header />
             <h5 className='text-center pt-4'>Select Date: <input type="date" onChange={(e) => callDateWiseTasks(e.target.value)} /></h5>
             <h5 className="text-center pt-3"><u>History</u></h5>
             <ul class="list-group">
